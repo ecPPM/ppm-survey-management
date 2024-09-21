@@ -4,10 +4,10 @@ namespace App\Livewire\Pages;
 
 use Livewire\Component;
 
-class Survey extends Component
+class SurveySettings extends Component
 {
     public function render()
     {
-        return view('livewire.pages.survey');
+        return view('livewire.pages.survey-settings');
     }
 }
