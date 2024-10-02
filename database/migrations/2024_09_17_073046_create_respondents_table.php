@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('respondents', function (Blueprint $table) {
             $table->id();
+            $table->string('resp_code')->unique();
+            $table->foreignId('survey_id')->constrained();
+            $table->foreignId('user_id')->constrained();
+            $table->string('name');
+            $table->string('password');
+            $table->string('status');
             $table->timestamps();
         });
     }

@@ -1,7 +1,7 @@
 <div class="">
     <div class="bg-white mx-auto py-6 px-4 flex-col lg:flex-row sm:px-6 lg:px-8 max-w-7xl lg:navbar">
         <div class="lg:navbar-start">
-            <select id="status" wire:model.change="selectedStatus" class="select select-bordered lg:w-1/2 w-full bg-gray-100 text-black">
+            <select id="status" wire:model.change="selectedStatus" class="select select-bordered lg:w-1/2 w-full bg-white text-black">
                 <option value="">Filter By Status</option>
                 @foreach ($statuses as $status)
                     <option value="{{ $status }}">{{ $status }}</option>
@@ -11,7 +11,7 @@
 
         <div class="lg:navbar-center">
             <div class="w-full flex justify-between items-center">
-                <label class="input input-bordered bg-gray-100 w-full sm:w-auto flex items-center gap-2">
+                <label class="input input-bordered w-full sm:w-auto flex items-center gap-2">
                     <input wire:model.live.debounce="search" id="search" type="text" class="grow border-none input-ghost"
                            placeholder="Search By Title" />
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
@@ -25,15 +25,24 @@
         </div>
 
         <div class="lg:navbar-end">
-            <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+            <button
+                wire:click="toggleModal"
+                class="btn btn-primary"
+            >
                 New Survey
             </button>
         </div>
     </div>
+
+    <x-survey.create-modal
+        wire:key="create-modal"
+        :modal-open="$modalOpen"
+    />
+
     <div class="py-6 text-black">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             @foreach ($surveys as $survey)
-                <x-survey-list-item
+                <x-survey.list-item
                     :survey="$survey"
                 />
             @endforeach

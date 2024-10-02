@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\SurveyController;
+use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,10 +23,20 @@ Route::middleware(['auth', 'verified'])->get('/surveys', [SurveyController::clas
 Route::middleware(['auth', 'verified'])->prefix('surveys/{id}')->group(function () {
     Route::get('/', [SurveyController::class, 'show'])->name('surveys.show');
     Route::get('/settings', [SurveyController::class, 'settings'])->name('surveys.settings');
-    Route::get('/respondents', [SurveyController::class, 'respondents'])->name('surveys.respondents');
+    Route::get('/enumerators', [SurveyController::class, 'enumerators'])->name('surveys.enumerators');
+    Route::get('/enumerators/{enum_id}/respondents', [SurveyController::class, 'respondents'])->name('surveys.respondents');
+    Route::get('/dashboard', [SurveyController::class, 'dashboard'])->name('surveys.dashboard');
     Route::get('/questionnaire', [SurveyController::class, 'questionnaire'])->name('surveys.questionnaire');
+    Route::post('/upload-enumerator-list', [SurveyController::class, 'upload'])->name('upload.enumerator');
+    Route::get('/download-enumerator-template', [SurveyController::class, 'downloadEnumeratorTemplate'])->name('download.enumerator.template');
 });
 
+
+
+
+
+
+Route::middleware(['auth', 'verified'])->get('/users', [UserManagementController::class, 'index'])->name('users');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

@@ -1,3 +1,91 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    html {
+        font-family: "Poppins", system-ui, sans-serif;
+        font-size: 16px;
+    }
+}
+
+html.light {
+    --tw-bg-opacity: 1;
+    background-color: white !important;
+    color: black !important;
+}
+
+html.light .dark\:bg-gray-800 {
+    background-color: white !important;
+}
+html.light .dark\:text-white {
+    color: black !important;
+}
+
+body {
+    background-color: #f9fafb;
+}
+
+.btn {
+    @apply font-medium;
+}
+
+.btn-primary {
+    @apply text-base-100;
+}
+
+.main-container {
+    @apply w-full flex flex-col gap-10 px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-32 mt-10 overflow-hidden;
+}
+
+.main-title {
+    @apply text-2xl sm:text-[30px] font-bold text-base-content;
+}
+
+table.app-table {
+    @apply w-full border-collapse overflow-x-scroll bg-base-100 rounded-md mt-2;
+}
+
+table.app-table th {
+    @apply text-base font-semibold text-base-content/60 py-4 uppercase;
+}
+
+table.app-table td {
+    @apply text-sm text-base-content py-4 border-b border-t border-b-slate-500 border-opacity-20;
+}
+
+table.app-table th:not(.action),
+table.app-table td:not(.action) {
+    @apply px-6 whitespace-nowrap;
+}
+
+table.app-table th.action,
+table.app-table td.action {
+    @apply px-4;
+}
+
+ul.app-list {
+    @apply w-full flex flex-col;
+}
+
+ul.app-list li {
+    @apply w-full flex items-center leading-[40px];
+}
+
+ul.app-list li > label {
+    @apply w-[175px] leading-[40px] text-base-content/50;
+}
+
+ul.app-list li > span {
+    @apply flex-1 text-base-content;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+}

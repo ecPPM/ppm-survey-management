@@ -15,4 +15,9 @@ class Survey extends Model
         'end_date',
         'status',
     ];
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

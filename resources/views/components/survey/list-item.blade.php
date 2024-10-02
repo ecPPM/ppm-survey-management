@@ -3,7 +3,7 @@
     'survey',
 ])
 
-<div wire:key={{ $survey->id }} class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+<div wire:key={{ $survey->id }} class="bg-white overflow-hidden shadow-sm sm:rounded-lg my-3">
     <a href="{{ url('/surveys/' . $survey->id) }}" class="card card-compact flex w-full hover:bg-gray-200 transition duration-200">
         <div class="card-body sm:flex-row">
             <div class="w-1/2 my-auto">

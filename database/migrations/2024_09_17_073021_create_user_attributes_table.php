@@ -18,8 +18,7 @@ return new class extends Migration
             $table->string('display_text');
             $table->string('order');
             $table->string('field_type');
-            $table->boolean('is_required')->default(false);
-            $table->foreignId('optionable_id')->constrained()->nullable();
+            $table->boolean('is_required');
             $table->timestamps();
         });
     }

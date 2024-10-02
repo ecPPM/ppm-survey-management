@@ -7,5 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class RespondentAttribute extends Model
 {
-    use HasFactory;
+    // Polymorphic relation to get options
+    public function options()
+    {
+        return $this->morphMany(Option::class, 'optionable');
+    }
 }

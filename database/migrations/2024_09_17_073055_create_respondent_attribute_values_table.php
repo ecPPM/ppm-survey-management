@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('respondent_attribute_values', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('respondent_id')->constrained();
+            $table->foreignId('respondent_attribute_id')->constrained();
+            $table->string('value');
             $table->timestamps();
         });
     }

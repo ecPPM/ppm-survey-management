@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('user_attribute_values', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_attribute_id')->constrained();
+            $table->string('value');
             $table->timestamps();
         });
     }

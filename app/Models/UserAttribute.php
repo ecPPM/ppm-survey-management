@@ -7,5 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserAttribute extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'survey_id',
+        'name',
+        'display_text',
+        'order',
+        'is_required',
+        'field_type'
+    ];
+
+    // Polymorphic relation to get options
+    public function options()
+    {
+        return $this->morphMany(Option::class, 'optionable');
+    }
 }

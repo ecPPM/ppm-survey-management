@@ -9,7 +9,7 @@
                 {{ __($survey->title) }}
             </h2>
         </div>
-        <x-survey-navbar
+        <x-survey.navbar
             :survey="$survey"
         />
 
