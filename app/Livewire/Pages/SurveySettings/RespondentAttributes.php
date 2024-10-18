@@ -3,12 +3,13 @@
 namespace App\Livewire\Pages\SurveySettings;
 
 use App\Models\Option;
+use App\Models\RespondentAttribute;
 use App\Models\UserAttribute;
 use App\Models\UserAttributeValue;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 
-class EnumeratorAttributes extends Component
+class RespondentAttributes extends Component
 {
     use LivewireAlert;
     public $surveyId;
@@ -31,24 +32,24 @@ class EnumeratorAttributes extends Component
     public $editOptions = [];
 
     // edit
-    public $editEnumeratorAttributeModalOpen = false;
+    public $editRespondentAttributeModalOpen = false;
 
     // delete
-    public $deleteEnumeratorAttributeModalOpen = false;
+    public $deleteRespondentAttributeModalOpen = false;
 
     public function mount($id)
     {
         $this->surveyId = $id;
     }
 
-    public function toggleEditEnumeratorAttributeModal($id)
+    public function toggleEditRespondentAttributeModal($id)
     {
-        $this->editEnumeratorAttributeModalOpen = !$this->editEnumeratorAttributeModalOpen;
+        $this->editRespondentAttributeModalOpen = !$this->editRespondentAttributeModalOpen;
         $this->editingAttributeId = $id;
-        if ($this->editEnumeratorAttributeModalOpen) {
-            $this->setEnumeratorAttributeDetails($id);
+        if ($this->editRespondentAttributeModalOpen) {
+            $this->setRespondentAttributeDetails($id);
         } else {
-            $this->clearEnumAttributeEdit();
+            $this->clearRespAttributeEdit();
         }
     }
 
@@ -73,13 +74,13 @@ class EnumeratorAttributes extends Component
         $this->editOptions = array_values($this->editOptions);  // Reindex the array to avoid issues
     }
 
-    public function clearEnumAttributeEdit()
+    public function clearRespAttributeEdit()
     {
-        $this->reset(['editName', 'editOrder', 'editDisplayText', 'editFieldType', 'editIsRequired', 'editOptionDisplayText', 'editOptionValue', 'editOptions', 'editEnumeratorAttributeModalOpen']);
+        $this->reset(['editName', 'editOrder', 'editDisplayText', 'editFieldType', 'editIsRequired', 'editOptionDisplayText', 'editOptionValue', 'editOptions', 'editRespondentAttributeModalOpen']);
         $this->resetValidation();
     }
 
-    public function editEnumeratorAttribute()
+    public function editRespondentAttribute()
     {
         $this->validate([
             'editOrder' => 'required',
@@ -89,9 +90,9 @@ class EnumeratorAttributes extends Component
             'editName' => [
                 'required',
                 function ($attribute, $value, $fail, $id) {
-                    $editingAttribute = UserAttribute::find($this->editingAttributeId);
+                    $editingAttribute = RespondentAttribute::find($this->editingAttributeId);
                     if ($editingAttribute->name !== $value){
-                        $nameColumns = UserAttribute::where('survey_id', $this->surveyId)
+                        $nameColumns = RespondentAttribute::where('survey_id', $this->surveyId)
                             ->pluck('name')
                             ->toArray();
 
@@ -114,7 +115,7 @@ class EnumeratorAttributes extends Component
             ],
         ]);
 
-        $editingAttribute = UserAttribute::find($this->editingAttributeId);
+        $editingAttribute = RespondentAttribute::find($this->editingAttributeId);
         $editingAttribute->name = $this->editName;
         $editingAttribute->order = $this->editOrder;
         $editingAttribute->display_text = $this->editDisplayText;
@@ -167,12 +168,12 @@ class EnumeratorAttributes extends Component
             ]
         ]);
 
-        $this->clearEnumAttributeEdit();
+        $this->clearRespAttributeEdit();
     }
 
-    public function setEnumeratorAttributeDetails($id)
+    public function setRespondentAttributeDetails($id)
     {
-        $attribute = UserAttribute::find($id);
+        $attribute = RespondentAttribute::find($id);
         $this->editName = $attribute->name;
         $this->editOrder = $attribute->order;
         $this->editDisplayText = $attribute->display_text;
@@ -182,17 +183,17 @@ class EnumeratorAttributes extends Component
         $this->editOptions = $attribute->options()->get()->toArray();;
     }
 
-    public function togglDeleteEnumeratorAttributeModal($id) {
-        $this->deleteEnumeratorAttributeModalOpen = !$this->deleteEnumeratorAttributeModalOpen;
+    public function togglDeleteRespondentAttributeModal($id) {
+        $this->deleteRespondentAttributeModalOpen = !$this->deleteRespondentAttributeModalOpen;
         $this->editingAttributeId = $id;
     }
 
-    public function deleteEnumeratorAttribute($id)
+    public function deleteRespondentAttribute($id)
     {
-        $attribute = UserAttribute::find($id);
+        $attribute = RespondentAttribute::find($id);
 
         // Delete related UserAttributeValues
-        UserAttributeValue::where('user_attribute_id', $attribute->id)->delete();
+        RespondentAttribute::where('respondent_attribute_id', $attribute->id)->delete();
 
         // Delete related options
         $attribute->options()->delete();
@@ -208,21 +209,21 @@ class EnumeratorAttributes extends Component
         ]);
 
         // Clear the deletion state
-        $this->clearEnumAttributeDelete();
+        $this->clearRespAttributeDelete();
     }
 
-    public function clearEnumAttributeDelete()
+    public function clearRespAttributeDelete()
     {
-        $this->reset(['deleteEnumeratorAttributeModalOpen']);
+        $this->reset(['deleteRespondentAttributeModalOpen']);
     }
 
     public function render()
     {
-        $attributes = UserAttribute::where('survey_id', $this->surveyId)
+        $attributes = RespondentAttribute::where('survey_id', $this->surveyId)
             ->orderByRaw('CASE WHEN `order` = 0 THEN 1 ELSE 0 END, `order` ASC, `name` ASC')
             ->get();
 
-        return view('livewire.pages.survey-settings.enumerator-attributes', [
+        return view('livewire.pages.survey-settings.respondent-attributes', [
             'attributes' => $attributes
         ]);
     }

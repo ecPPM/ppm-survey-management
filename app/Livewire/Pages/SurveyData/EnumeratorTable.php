@@ -12,15 +12,28 @@ class EnumeratorTable extends Component
 {
     use WithPagination;
     public $survey_id;
+    public $search = "";
+
+    protected $listeners = ['refreshTable' => 'refreshTable'];
 
     public function mount($id)
     {
         $this->survey_id = $id;
     }
 
-    public function search()
+    public function editEnumerator($enumCode)
     {
+        $this->dispatch('toggleEditEnumeratorModal', $enumCode);
+    }
 
+    public function deleteEnumerator($enumCode)
+    {
+        $this->dispatch('toggleDeleteEnumeratorModal', $enumCode);
+    }
+
+    public function refreshTable()
+    {
+        $this->resetPage();
     }
 
     public function render()
@@ -39,7 +52,7 @@ class EnumeratorTable extends Component
         $columns = array_merge($fixedColumns, $attributeColumns);
 
         // Optimize query: eager loading options with attributeValues
-        $users = User::where('survey_id', $this->survey_id)
+        $users = User::where('survey_id', $this->survey_id)->where('enum_code', 'like', "%{$this->search}%")
             ->with([
                 'attributeValues.userAttribute.options',
                 'attributeValues' => function ($query) {
@@ -60,9 +73,12 @@ class EnumeratorTable extends Component
             foreach ($attributeColumns as $attributeName) {
                 $value = $user->attributeValues->where('userAttribute.name', $attributeName)->first();
 
-                // Find option display_text if value is set
-                $displayValue = $value ? optional($value->userAttribute->options->where('value', $value->value)->first())->display_text : '';
-                $rowData[] = $displayValue ?: $value->value; // Show display_text or value
+                if ($value) {
+                    $displayValue = optional($value->userAttribute->options->where('value', $value->value)->first())->display_text;
+                    $rowData[] = $displayValue ?: $value->value; // Show display_text or fallback to the value itself
+                } else {
+                    $rowData[] = '';
+                }
             }
 
             $tableData[] = $rowData;

@@ -51,6 +51,13 @@
             :options="$options"
         />
 
+        <x-settings.create-respondent-attribute-modal
+            wire:key="create-respondent-attribute-modal"
+            :modal-open="$createRespondentAttributeModalOpen"
+            :field-type="$fieldType"
+            :options="$options"
+        />
+
         <div class="card-body border rounded-md sm:flex-row mb-5 bg-gray-50">
             <div class="w-1/2 my-auto">
                 <h2 class="card-title">{{ $survey->title }}</h2>
@@ -153,7 +160,7 @@
             </button>
         </div>
 
-        <div class="card-body border rounded-md bg-gray-50">
+        <div class="card-body border rounded-md bg-gray-50 mb-5">
             <div class="flex flex-row justify-between items-center">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-3">
                     Enumerator Attributes
@@ -200,6 +207,22 @@
                     @error('file') <span class="error text-red-500">{{ $message }}</span> @enderror
                 </div>
             </form>
-            {{-- @livewire('pages.survey-settings.enumerator-file-upload', ['surveyId' => $survey->id]) --}}
+        </div>
+
+        <div class="card-body border rounded-md bg-gray-50">
+            <div class="flex flex-row justify-between items-center">
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-3">
+                    Respondent Attributes
+                </h2>
+
+                <button
+                    wire:click="toggleCreateRespondentAttributeModal"
+                    class="btn btn-primary my-auto">
+                    New Attribute
+                </button>
+            </div>
+
+            @livewire('pages.survey-settings.respondent-attributes', ['id' => $survey->id])
+
         </div>
 </div>

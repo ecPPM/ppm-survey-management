@@ -31,12 +31,12 @@
                             <td>
                                 <div class="flex flex-row gap-3">
                                     <button
-                                        wire:click=""
+                                        wire:click="editEnumerator('{{ $row[0] }}')"
                                         class="btn btn-info">
                                         Edit
                                     </button>
                                     <button
-                                        wire:click=""
+                                        wire:click="deleteEnumerator('{{ $row[0] }}')"
                                         class="btn bg-red-500 text-white">
                                         Delete
                                     </button>

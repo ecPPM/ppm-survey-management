@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EnumeratorController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Route;
@@ -18,9 +19,9 @@ use Illuminate\Support\Facades\Storage;
 
 Route::redirect('/', '/login');
 
-Route::middleware(['auth', 'verified'])->get('/surveys', [SurveyController::class, 'index'])->name('surveys');
+Route::middleware(['auth', 'role:admin'])->get('/surveys', [SurveyController::class, 'index'])->name('surveys');
 
-Route::middleware(['auth', 'verified'])->prefix('surveys/{id}')->group(function () {
+Route::middleware(['auth', 'role:admin'])->prefix('surveys/{id}')->group(function () {
     Route::get('/', [SurveyController::class, 'show'])->name('surveys.show');
     Route::get('/settings', [SurveyController::class, 'settings'])->name('surveys.settings');
     Route::get('/enumerators', [SurveyController::class, 'enumerators'])->name('surveys.enumerators');
@@ -31,15 +32,14 @@ Route::middleware(['auth', 'verified'])->prefix('surveys/{id}')->group(function 
     Route::get('/download-enumerator-template', [SurveyController::class, 'downloadEnumeratorTemplate'])->name('download.enumerator.template');
 });
 
+Route::middleware(['auth', 'role:admin'])->get('/users', [UserManagementController::class, 'index'])->name('users');
 
-
-
-
-
-Route::middleware(['auth', 'verified'])->get('/users', [UserManagementController::class, 'index'])->name('users');
+Route::middleware(['auth', 'role:enumerator'])->get('/info', [EnumeratorController::class, 'info'])->name('info');
+Route::middleware(['auth', 'role:enumerator', 'mode:Register,Both'])->get('/registration', [EnumeratorController::class, 'registration'])->name('registration');
+Route::middleware(['auth', 'role:enumerator', 'mode:Deploy,Both'])->get('/deployment', [EnumeratorController::class, 'deployment'])->name('deployment');
 
 Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
+    ->middleware(['auth', 'role:admin'])
     ->name('dashboard');
 
 Route::view('profile', 'profile')

@@ -7,6 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class RespondentAttribute extends Model
 {
+    protected $fillable = [
+        'survey_id',
+        'name',
+        'display_text',
+        'order',
+        'is_required',
+        'field_type'
+    ];
+
     // Polymorphic relation to get options
     public function options()
     {

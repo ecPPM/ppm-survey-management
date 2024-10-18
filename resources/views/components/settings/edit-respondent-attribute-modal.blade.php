@@ -6,7 +6,7 @@
 ])
 
 
-<dialog id="editAttributeModal" {{ $attributes->class(['modal', 'modal-open' => $modalOpen]) }}>
+<dialog id="editRespondentAttributeModal" {{ $attributes->class(['modal', 'modal-open' => $modalOpen]) }}>
     <div class="modal-box flex flex-col w-11/12 max-w-3xl px-5 md:px-10 pt-0 pb-4 md:pb-8">
         <div class="flex flex-col gap-8 relative">
             <div class="flex flex-col gap-4 pt-4 md:pt-8 bg-base-100 sticky top-0 left-0">
@@ -113,8 +113,8 @@
             </form>
 
             <div class="flex gap-3 items-center justify-end w-full">
-                <button wire:click="clearEnumAttributeEdit" class="btn btn-outline">Cancel</button>
-                <button wire:click="editEnumeratorAttribute" class="btn btn-primary">Save Changes</button>
+                <button wire:click="clearRespAttributeEdit" class="btn btn-outline">Cancel</button>
+                <button wire:click="editRespondentAttribute" class="btn btn-primary">Save Changes</button>
             </div>
         </div>
     </div>

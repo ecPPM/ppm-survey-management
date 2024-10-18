@@ -21,7 +21,11 @@ new #[Layout('layouts.guest')] class extends Component
 
         Session::regenerate();
 
-        $this->redirectIntended(default: RouteServiceProvider::HOME, navigate: true);
+        if (auth()->user()->role->name === 'admin') {
+            $this->redirectIntended(default: RouteServiceProvider::HOME, navigate: true);
+        } else {
+            $this->redirectIntended(default: RouteServiceProvider::ENUM_HOME, navigate: true);
+        }
     }
 }; ?>
 
